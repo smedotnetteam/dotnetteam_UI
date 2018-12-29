@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  uinetcore:
+    image: uinetcore
+    build: .
+    ports:
+      - 5000:80
