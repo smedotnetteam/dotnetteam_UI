@@ -31,6 +31,8 @@
             if(data.success) {
                 $(".loader").hide();
                 $('.loading-icon').hide();
+                localStorage.setItem("user_id", data.data.userId);
+                localStorage.setItem("access_token", data.data.token);
                 window.location = "./update-company.html";
             }
             else {
