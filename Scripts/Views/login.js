@@ -1,41 +1,34 @@
-﻿$(document).ready(function () {
-    $('#btnLogin').on('click', loginJS.btnLogin_onClick);
-})
+﻿$("#btnLogin").click(function(){
+    //alert("OK");
+    var email = $('#txtEmail').val();
+    var password = $('#txtPassword').val();
+    
+    var myData = new Object();
+    myData ={
+        Email : email,
+        Password : password
+    };
+    console.log(JSON.stringify(myData));
 
-/**
- * Object JS phục vụ cho trang Login
- */
-var loginJS = Object.create({
-    /*
-     * Hàm xử lý khi nhấn Button Đăng ký
-     * Created by: NVMANH (28/12/2018) 
-     * */
-    btnLogin_onClick: function () {
-        // thực hiện validate:
+    $.ajax({
+        url: "/api/accounts/login",
+        beforeSend: function (xhrObj) {
+            xhrObj.setRequestHeader("Content-Type", "application/json");
+            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", "81873e87d2964e958be7dd07465b0f30");
+        },
+        method: "POST",
+        //dataType: "json",
+        data: JSON.stringify(myData),
+        contentType: "application/json;charset=utf-8",
+        success: function (data, textStatus, xhr) {
+            //do when sc
+            alert("Login success");
+            window.location("./update-info-company.html");
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            //do when er
+            alert("Login failed");
+        }
+    });
 
-        var data = {
-            "Email":$("#txtUserName").val(),
-            "Password":$("#txtPassword").val(),
-        };
-        $.ajax({
-            method:"POST",
-            url:'http://0.0.0.0:8000/api/account/login',
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function(data){
-                console.log(data.data.token);
-                localStorage.setItem("access_token", data.data.token);
-                window.location.href = "/Home/Index";
-            },
-            error: function(){
-                alert('xit');
-            }
-        });
-
-
-    },
-    doLogin: function () {
-
-    }
-})
+});
